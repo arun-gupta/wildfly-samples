@@ -18,7 +18,7 @@ public class HelloWorldServer {
     DeploymentManager manager;
 
     public HelloWorldServer() {
-        DeploymentInfo servletBuilder = deployment()
+        DeploymentInfo deploymentInfo = deployment()
                 .setClassLoader(HelloWorldServer.class.getClassLoader())
                 .setContextPath("/helloworld")
                 .setDeploymentName("helloworld.war")
@@ -30,7 +30,7 @@ public class HelloWorldServer {
                             .addMapping("/MyAnotherServlet")
                 );
 
-        manager = defaultContainer().addDeployment(servletBuilder);
+        manager = defaultContainer().addDeployment(deploymentInfo);
         manager.deploy ();
     }
 
