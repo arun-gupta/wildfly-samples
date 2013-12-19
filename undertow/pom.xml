@@ -28,6 +28,7 @@
 
     <modules>
         <module>helloworld</module>
+        <module>servlet</module>
     </modules>
 
 </project>
