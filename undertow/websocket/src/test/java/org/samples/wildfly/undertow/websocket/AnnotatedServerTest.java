@@ -17,15 +17,13 @@ import static org.junit.Assert.*;
  */
 public class AnnotatedServerTest {
 
-    private static final String BASE = "localhost:8080";
-
-//    @Test
+    @Test
     public void testEndpoint() throws IOException, ServletException, DeploymentException, InterruptedException {
         AnnotatedWebSocketServer server = new AnnotatedWebSocketServer();
         server.start();
 
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        String uri = "ws://" + BASE + "/server";
+        String uri = "ws://localhost:8080/server";
         System.out.println("Connecting to " + uri);
         container.connectToServer(MyClient.class, URI.create(uri));
 
