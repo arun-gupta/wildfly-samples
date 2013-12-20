@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            var websocket = new WebSocket("http://localhost:8080/myapp");
+            var output = document.getElementById("output");
+
+            websocket.onopen = function(event) {
+                console.log('onopen: ' + event.data);
+            };
+
+            websocket.onmessage = function(event) {
+                console.log('onmessage: ' + event.data);
+                output.innerHTML += event.data;
+            };
+
+            websocket.onerror = function(event) {
+                console.log('onerror: ' + event.data);
+            };
+
+            function send_message() {
+                if (websocket.readyState === WebSocket.OPEN) {
+                    websocket.send(message);
+                } else {
+                    console.log("WebSocket is not open.");
+                }
+            }
+        </script>
+        <title>TODO supply a title</title>
+    </head>
+    <body>
+        <form onsubmit="return false;">
+            <input type="text" name="message" value="Hello World!"/>
+            <input type="button" name="button" value="Send WebSocket Message" onclick="send(this.form.message.value)"/>
+        </form>
+        <div id="output"></div>
+    </body>
+</html>
