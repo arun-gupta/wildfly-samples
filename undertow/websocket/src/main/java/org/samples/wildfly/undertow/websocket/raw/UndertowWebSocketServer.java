@@ -1,4 +1,4 @@
-package org.samples.wildfly.undertow.websocket;
+package org.samples.wildfly.undertow.websocket.raw;
 
 import io.undertow.Undertow;
 import javax.servlet.ServletException;

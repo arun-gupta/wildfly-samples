@@ -1,10 +1,10 @@
 package org.samples.wildfly.undertow.websocket;
 
+import org.samples.wildfly.undertow.websocket.raw.UndertowWebSocketServer;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlButtonInput;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import org.samples.wildfly.undertow.websocket.annotated.AnnotatedWebSocketServer;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.ServletException;
