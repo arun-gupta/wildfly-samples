@@ -6,20 +6,20 @@ import static io.undertow.servlet.Servlets.defaultContainer;
 import static io.undertow.servlet.Servlets.deployment;
 import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 
 /**
  * @author Arun Gupta
  */
-public class HelloWorldServer {
+public class SimpleServletServer {
 
     Undertow server;
     
-    DeploymentManager manager;
-
-    public HelloWorldServer() {
+    public SimpleServletServer() {
         DeploymentInfo deploymentInfo = deployment()
-                .setClassLoader(HelloWorldServer.class.getClassLoader())
+                .setClassLoader(SimpleServletServer.class.getClassLoader())
                 .setContextPath("/helloworld")
                 .setDeploymentName("helloworld.war")
                 .addServlets(
@@ -30,15 +30,19 @@ public class HelloWorldServer {
                             .addMapping("/MyAnotherServlet")
                 );
 
-        manager = defaultContainer().addDeployment(deploymentInfo);
+        DeploymentManager manager = defaultContainer().addDeployment(deploymentInfo);
         manager.deploy ();
+        try {
+            server = Undertow.builder()
+                    .addListener(8080, "localhost")
+                    .setHandler(manager.start())
+                    .build();
+        } catch (ServletException ex) {
+            Logger.getLogger(SimpleServletServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void start() throws ServletException {
-        server = Undertow.builder()
-                .addListener(8080, "localhost")
-                .setHandler(manager.start())
-                .build();
+    public void start() {
         server.start();
     }
 

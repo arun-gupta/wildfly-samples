@@ -13,13 +13,13 @@ import static org.junit.Assert.*;
 /**
  * @author Arun Gupta
  */
-public class HelloWorldServerTest {
+public class SimpleServletServerTest {
     
     private static final String BASE = "http://localhost:8080";
 
     @Test
     public void testMyServlet() throws IOException, ServletException {
-        HelloWorldServer server = new HelloWorldServer();
+        SimpleServletServer server = new SimpleServletServer();
         server.start();
         WebClient webClient = new WebClient();
         TextPage page = webClient.getPage(BASE + "/MyServlet");
@@ -34,7 +34,7 @@ public class HelloWorldServerTest {
 
     @Test
     public void testMyAnotherServlet() throws IOException, ServletException {
-        HelloWorldServer server = new HelloWorldServer();
+        SimpleServletServer server = new SimpleServletServer();
         server.start();
         WebClient webClient = new WebClient();
         TextPage page = webClient.getPage(BASE + "/MyAnotherServlet");
