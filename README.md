@@ -1,3 +1,3 @@
-Samples for WildFly and Related Technologies
-============================================
+WildFly Related Samples
+=======================
 
