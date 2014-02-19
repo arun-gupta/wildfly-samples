@@ -1,7 +1,7 @@
 <jboss-deployment-structure>
     <deployment>
         <dependencies>
-            <module name="org.samples.greet" services="import" />
+            <module name="org.samples.greet" services="import" meta-inf="import" export="true"/>
         </dependencies>
     </deployment>
 </jboss-deployment-structure>
