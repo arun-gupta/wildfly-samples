@@ -1,0 +1,25 @@
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/ant-build/HelloWorld.ap_ \
+ : /Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/res/drawable/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/res/drawable-hdpi/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/res/drawable-ldpi/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/res/drawable-mdpi/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/res/drawable-xhdpi/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/res/values/strings.xml \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/res/xml/config.xml \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/ant-build/res/drawable/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/ant-build/res/drawable-hdpi/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/ant-build/res/drawable-ldpi/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/ant-build/res/drawable-mdpi/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/ant-build/res/drawable-xhdpi/icon.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/_where-is-www.txt \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/cordova.js \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/cordova_plugins.js \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/css \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/img \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/index.html \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/js \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/css/index.css \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/img/logo.png \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/assets/www/js/index.js \
+/Users/arungupta/workspaces/wildfly-samples/cordova/hello/platforms/android/ant-build/AndroidManifest.xml \
