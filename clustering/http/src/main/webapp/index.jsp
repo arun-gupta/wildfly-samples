@@ -1,10 +1,10 @@
 <%@ page import="java.util.Enumeration" %>
 <html>
     <head>
-        <title>HTTP Session Failover in WildFly</title>
+        <title>HTTP Session Failover in WildFly 8</title>
     </head>
     <body>
-        <h1>HTTP Session Failover in WildFly</h1>
+        <h1>HTTP Session Failover in WildFly 8</h1>
 
         <h2>Debug Information</h2>
         <b>Timestamp:</b> <%= java.util.Calendar.getInstance().getTime() %><br/>
@@ -12,9 +12,6 @@
         <b>Host name:</b> <%= System.getProperty("jboss.host.name") %><br/>
         <b>Qualified host name:</b> <%= System.getProperty("jboss.qualified.host.name") %><br/>
         <b>Session id:</b> <%= session.getId() %><br/>
-        <b>Session Created:</b>  <%= new java.util.Date(session.getCreationTime())%></br/>
-        <b>Last Accessed:</b>    <%= new java.util.Date(session.getLastAccessedTime())%><br/>
-        <b>Session will go inactive in:</b>  <%= session.getMaxInactiveInterval() %> seconds<br/>
 
         <%
             String attrName = request.getParameter("attrName");
