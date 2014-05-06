@@ -16,7 +16,7 @@
 . File system-based
 . Maven plugin
 . REST API
-. JRebel?
+include::jrebel.asciidoc[]
 
 == Testing
 
