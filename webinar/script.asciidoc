@@ -1,0 +1,17 @@
+= WildFly for modern application development
+
+. Download, install, and get started
+. Deployment options
+.. Maven plugin
+.. IDEs
+.. File system-based
+.. REST API
+. Arquillian?
+. Forge?
+. JRebel?
+. Admin Console
+. RBAC
+. Clustering + Session failover
+. jboss-cli
+. OpenShift
+
