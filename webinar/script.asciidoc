@@ -1,17 +1,49 @@
 = WildFly for modern application development
 
-. Download, install, and get started
-. Deployment options
-.. Maven plugin
-.. IDEs
-.. File system-based
-.. REST API
-. Arquillian?
-. Forge?
-. JRebel?
-. Admin Console
-. RBAC
-. Clustering + Session failover
+== Introduction to WildFly
+. Explain the difference with JBoss EAP
+. Download, install, and start
+.. Standalone mode
+.. Domain mode
+
+== Development
+. IDE: IntelliJ, JBoss Developer Studio/Eclipse, NetBeans
+. Forge
+
+== Deployment
 . jboss-cli
-. OpenShift
+. Admin Console
+. File system-based
+. Maven plugin
+. REST API
+. JRebel?
+
+== Testing
+
+Arquillian brings the test to runtime so that you don't have to manage the runtime from the test (or build). It covers all aspects of test execution:
+
+. Manage the lifecycle of the container (or containers)
+. Bundling the test case, dependent classes and resources into a ShrinkWrap archive (or archives)
+. Deploy the archive (or archives) to the container (or containers)
+. Enriching the test case by providing dependency injection and other declarative services
+. Executing the tests inside (or against) the container
+. Capturing the results and returning them to the test runner for reporting
+
+Three guiding principles:
+
+. Tests should be portable to any supported container
+. Tests should be executable from both the IDE and the build tool
+. The platform should extend or integrate existing test frameworks
+
+=== Remote container
+
+=== Managed container
+Managed Container is simpley a remote container that also includes lifecycle management (start and stop). Container process is started in a different JVM. Once the container is up and running, it just behaves like a remote container.
+... JUnit and TestNG
+
+== RBAC
+
+== Clustering + Session failover
+
+== OpenShift
 
