@@ -43,7 +43,36 @@ Managed Container is simpley a remote container that also includes lifecycle man
 
 == RBAC
 
+Role Based Access Control (RBAC) is the ability to restrict access to system or certain portions of it to authorized users. For JBoss AS 7.x or JBoss EAP 6.0 and 6.1, the web-based administrative console had an all-or-nothing approach. So if a user can authenticate with management security realm, then he'll have all the privileges. This might be OK for smaller deployments but the roles are typically divided for mission critical deployments and a finer-grained control is required.
+
+JBoss EAP 6.2 and WildFly 8 introduces RBAC using different roles. There are essential 7 different roles in 2 different categories – administrative and privileged:
+
+. Monitor
+. Operator
+. Maintainer
+. Deployer
+. Administrator
+. Auditor
+. Super User
+
+Each Role is defined as a set of Permissions and Permissions specify what Actions are permitted by the logged in user, which is basically lookup, write, or delete.
+
+Show basic functionality using Admin Console from https://vimeo.com/78780176[Part 1], https://vimeo.com/78785944[Part 2], https://vimeo.com/78786992[Part 3].
+
 == Clustering + Session failover
+
+Run the video from https://vimeo.com/89157225[]. It shows:
+
+. Introduction to WildFly and Managed Domain concepts
+. Setup up a 2-instance cluster
+. Deploy a WAR file to the cluster using centralized administration from admin console
+. Access the application on one node and add HTTP session attributes on it
+. Shutdown that instance and show HTTP session failover by accessing the application on other instance
 
 == OpenShift
 
+. Create an OpenShift application using WildFly cartridge
+. Access the WildFly administration console using port forwarding
+. Import the created application in JBoss Developer Studio/IntelliJ
+. Make changes to the application and view them in the deployed application
+. Add a simple Java EE 7 component to the application
