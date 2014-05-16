@@ -1,15 +1,22 @@
+:doctype: book
+:toc:
+:toclevels: 2
+
 = WildFly for modern application development
 
+[[introduction]]
 == Introduction to WildFly
 . Explain the difference with JBoss EAP
 . Download, install, and start
 .. Standalone mode
 .. Domain mode
 
+[[development]]
 == Development
 . IDE: IntelliJ, JBoss Developer Studio/Eclipse, NetBeans
 . Forge
 
+[[deployment]]
 == Deployment
 . jboss-cli
 . Admin Console
@@ -18,6 +25,7 @@
 . REST API
 include::jrebel.asciidoc[]
 
+[[testing]]
 == Testing
 
 Arquillian brings the test to runtime so that you don't have to manage the runtime from the test (or build). It covers all aspects of test execution:
@@ -53,7 +61,7 @@ Generate a simple Java EE 7 sample with pre-defined Arquillian dependencies:
 === Managed container
 Managed Container is simply a remote container that also includes lifecycle management (start and stop). Container process is started in a different JVM. Once the container is up and running, it just behaves like a remote container.
 
-
+[[rbac]]
 == RBAC
 
 Role Based Access Control (RBAC) is the ability to restrict access to system or certain portions of it to authorized users. For JBoss AS 7.x or JBoss EAP 6.0 and 6.1, the web-based administrative console had an all-or-nothing approach. So if a user can authenticate with management security realm, then he'll have all the privileges. This might be OK for smaller deployments but the roles are typically divided for mission critical deployments and a finer-grained control is required.
@@ -78,11 +86,13 @@ Show basic functionality using Admin Console from https://vimeo.com/78780176[Par
 . Reload the Admin Console and show that login now works.
 . Click on Administration tab and explain Access Control Providers.
 . Change access control provider by giving the following command interactively on `jboss-cli`:
++
 [source,text]
 ----
 [domain@localhost:9990 /] /core-service=management/access=authorization:write-attribute(name=provider,value=rbac)
 [domain@localhost:9990 /] reload --host=master
 ----
++
 . Hmm, Admin Console is not accessible now. Restarting the server also did not help, debugging ...
 
 == Clustering + Session failover
@@ -95,10 +105,15 @@ Run the video from https://vimeo.com/89157225[]. It shows:
 . Access the application on one node and add HTTP session attributes on it
 . Shutdown that instance and show HTTP session failover by accessing the application on other instance
 
-== OpenShift
+[[paas]]
+== PaaS
+
+=== OpenShift
 
 . Create an OpenShift application using WildFly cartridge
 . Access the WildFly administration console using port forwarding
 . Import the created application in JBoss Developer Studio/IntelliJ
 . Make changes to the application and view them in the deployed application
 . Add a simple Java EE 7 component to the application
+
+=== Cloudbees
