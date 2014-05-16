@@ -13,8 +13,128 @@
 
 [[development]]
 == Development
-. IDE: IntelliJ, JBoss Developer Studio/Eclipse, NetBeans
-. Forge
+=== IDE: IntelliJ, JBoss Developer Studio/Eclipse, NetBeans
+
+=== Forge
+
+This section of the script creates a new Java EE app from scratch using Forge, adds the key Java EE 6 technologies. It adds some pre-canned entities, and scaffolds JAX-RS endpoints.
+
+1. In the Forge console, create a new project
+
+    project-new --named basic-javaee-forge --topLevelPackage org.forge.samples.javaee
+
+2. Add some Java EE capabilities:
+
+    servlet-setup; cdi-setup; jpa-setup --container JBOSS_EAP6; rest-setup; constraint-setup; faces-setup; ejb-setup; scaffold-setup
+    ***SUCCESS*** Servlet API has been installed.
+    [basic-javaee-forge]$ ***SUCCESS*** CDI has been installed.
+    [basic-javaee-forge]$ ***SUCCESS*** Persistence (JPA) is installed.
+    [basic-javaee-forge]$ ***SUCCESS*** JAX-RS has been installed.
+    [basic-javaee-forge]$ ***SUCCESS*** JavaServer Faces has been installed.
+    [basic-javaee-forge]$ ***SUCCESS*** Bean Validation is installed.
+    [basic-javaee-forge]$ ***SUCCESS*** JavaServer Faces has been installed.
+    [basic-javaee-forge]$ ***SUCCESS*** EJB has been installed.
+    [basic-javaee-forge]$ ***SUCCESS*** Scaffold was setup successfully.
+
+3. Add some entities:
+
+    [basic-javaee-forge]$ jpa-new-entity --named Author --targetPackage org.forge.samples.javaee.entities
+    ***SUCCESS*** Entity org.forge.samples.javaee.entities.Author created
+    [Author.java]$ jpa-new-entity --named Book --targetPackage org.forge.samples.javaee.entities
+    ***SUCCESS*** Entity org.forge.samples.javaee.entities.Book created
+
+4. Each entity is generated with the following fields:
++
+[source,java]
+----
+@Id
+@GeneratedValue(strategy = GenerationType.AUTO)
+@Column(name = "id", updatable = false, nullable = false)
+private Long id;
+@Version
+@Column(name = "version")
+private int version;
+----
++
+Add some fields to these entities:
+
+    [Book.java]$ jpa-new-field --named title --type String --length 100
+    ***SUCCESS*** Field title created
+    [Book.java]$ jpa-new-field --named isbn --type String --length 30
+    ***SUCCESS*** Field isbn created
+    [Book.java]$ cd ../Author.java
+    [Author.java]$ jpa-new-field --named name --type java.lang.String --length 50
+    ***SUCCESS*** Field name created
+    [Author.java]$ jpa-new-field --named books --type org.forge.samples.javaee.entities.Book --relationshipType One-to-Many 
+    ***SUCCESS*** Relationship One-to-Many created
+
+4. Add some Bean Validation constraints:
+
+    [Author.java]$ constraint-add --onProperty name --constraint Size --max 50
+    ***SUCCESS*** Constraint Size successfully configured
+    [Author.java]$ cd ../Book.java
+    [Book.java]$ constraint-add --onProperty title --constraint Size --max 100
+    ***SUCCESS*** Constraint Size successfully configured
+    [Book.java]$ constraint-add --onProperty isbn --constraint Size --max 30
+    ***SUCCESS*** Constraint Size successfully configured
+    [Book.java]$ constraint-add --onProperty isbn --constraint Pattern --regexp ^\d{9}[\d|X]$
+    ***ERROR*** org.eclipse.jdt.core.dom.MarkerAnnotation cannot be cast to org.eclipse.jdt.core.dom.NormalAnnotation
++
+This is filed as https://issues.jboss.org/browse/FORGE-1706.
+
+==== JSF Scaffold
+
+5. Generate JSF scaffold endpoints for the entity.
+
+    [Book.java]$ scaffold-generate --targets org.forge.samples.javaee.entities.Author
+    ***SUCCESS*** Scaffold was generated successfully.
+    [Book.java]$ scaffold-generate --targets org.forge.samples.javaee.entities.Book
+    ***SUCCESS*** Scaffold was generated successfully.
+
+5. Package and deploy the application as:
+
+    mvn clean package
+    jboss-cli.sh -c --command="deploy /Users/arungupta/workspaces/forge-samples/basic_javaee/basic-javaee-forge/target/basic-javaee-forge-1.0.0-SNAPSHOT.war --force"
+
+5. Access the application at http://localhost:8080/basic-javaee-forge-1.0.0-SNAPSHOT/faces/index.xhtml.
+
+==== REST Scaffold
+
+6. Generate REST scaffold endpoints for the entity.
+
+    [Author.java]$ rest-generate-endpoints-from-entities --targets org.forge.samples.javaee.entities.Author --packageName org.forge.samples.javaee.rest
+    ***SUCCESS*** Endpoint created
+    [Author.java]$ rest-generate-endpoints-from-entities --targets org.forge.samples.javaee.entities.Book --packageName org.forge.samples.javaee.rest
+    ***SUCCESS*** Endpoint created
+
+6. Package and deploy the application as:
+
+    mvn clean package
+    jboss-cli.sh -c --command="deploy /Users/arungupta/workspaces/forge-samples/basic_javaee/basic-javaee-forge/target/basic-javaee-forge-1.0.0-SNAPSHOT.war --force"
+
+6. Access the endpoints at http://localhost:8080/basic-javaee-forge-1.0.0-SNAPSHOT/rest/authors and http://localhost:8080/basic-javaee-forge-1.0.0-SNAPSHOT/rest/books.
+
+==== Complete Script
+
+[source,text]
+----
+project-new --named basic-javaee-forge --topLevelPackage org.forge.samples.javaee
+servlet-setup; cdi-setup; jpa-setup --container JBOSS_EAP6; rest-setup; constraint-setup; faces-setup; ejb-setup; scaffold-setup
+jpa-new-entity --named Author --targetPackage org.forge.samples.javaee.entities
+jpa-new-entity --named Book --targetPackage org.forge.samples.javaee.entities
+jpa-new-field --targetEntity org.forge.samples.javaee.entities.Author --named name --type java.lang.String --length 50
+jpa-new-field --targetEntity org.forge.samples.javaee.entities.Book --named title --type String --length 100
+jpa-new-field --targetEntity org.forge.samples.javaee.entities.Book --named isbn --type String --length 30
+constraint-add --javaClass org.forge.samples.javaee.entities.Author --onProperty name --constraint Size --max 50
+constraint-add --javaClass org.forge.samples.javaee.entities.Book --onProperty title --constraint Size --max 100
+constraint-add --javaClass org.forge.samples.javaee.entities.Book --onProperty isbn --constraint Size --max 30
+scaffold-generate --targets org.forge.samples.javaee.entities.Author
+scaffold-generate --targets org.forge.samples.javaee.entities.Book
+rest-generate-endpoints-from-entities --targets org.forge.samples.javaee.entities.Book --packageName org.forge.samples.javaee.rest
+rest-generate-endpoints-from-entities --targets org.forge.samples.javaee.entities.Author --packageName org.forge.samples.javaee.rest
+----
+
+
 
 [[deployment]]
 == Deployment
@@ -86,11 +206,286 @@ All resources expose metadata that describes their attributes, operations, and c
 
 Command and operation request history is enabled by default. While in the command line session, you can use the arrow keys to go back and forth in the history of commands and operations.
 
+==== Operations
+
+. The operations require one of the following prefixes:
++
+.. `:` to execute against the current node
++
+Type `:` at the prompt and press tab key to see a complete list of operations. This will show the following output:
++
+[source]
+----
+[standalone@localhost:9990 /] :
+add-namespace                read-operation-names         take-snapshot                
+add-schema-location          read-resource                undefine-attribute           
+delete-snapshot              read-resource-description    upload-deployment-bytes      
+full-replace-deployment      reload                       upload-deployment-stream     
+list-snapshots               remove-namespace             upload-deployment-url        
+read-attribute               remove-schema-location       validate-address             
+read-children-names          replace-deployment           validate-operation           
+read-children-resources      resolve-expression           whoami                       
+read-children-types          resolve-internet-address     write-attribute              
+read-config-as-xml           server-set-restart-required  
+read-operation-description   shutdown 
+----
++
+TIP: Operations can be auto completed by using the tab key. For example, type `:r` at the prompt and press tab key to see the list of operations beginning with that letter.
++
+Read a simple attribute using `read-attribute` operation as shown:
++
+[source]
+----
+[standalone@localhost:9990 /] :read-attribute(name=release-version)
+----
++
+This will show the output as:
++
+[source]
+----
+{
+    "outcome" => "success",
+    "result" => "8.0.0.Final-SNAPSHOT"
+}
+----
+
+==== Commands
+
+. Type `help --commands` at the jboss-cli prompt to see a complete list of commands available in current context. This will show the following output:
++
+[source]
+----
+[standalone@localhost:9990 /] help --commands
+alias               deploy              if                  read-attribute      undeploy            
+batch               deployment-info     jdbc-driver-info    read-operation      unset               
+cd                  deployment-overlay  ls                  reload              version             
+clear               echo                module              run-batch           xa-data-source      
+command             echo-dmr            patch               set                 :                   
+connect             help                pwd                 shutdown            
+data-source         history             quit                try  
+----
++
+This can also be achieved by pressing the tab key at the prompt. The list of commands depends upon the current context, i.e. it may change based upon the node address in the domain management model.
++
+TIP: Commands can be auto completed by using the tab key. For example, type letter `d` at the prompt and press tab key to see the list of commands beginning with that letter. Enter space after choosing the command and press tab key again to see the list of arguments to the command.
++
+. Help for any command is available by typing the command name and using `--help` option. For example:
++
+[source]
+----
+[standalone@localhost:9990 /] deploy --help
+----
++
+will show the following output:
++
+[source]
+----
+SYNOPSIS
+
+    deploy ((file_path | --url=deployment_url)
+               [--script=script_name] [--name=deployment_name]
+               [--runtime-name=deployment_runtime_name]
+               [--force | --disabled] [--unmanaged])
+           | --name=deployment_name
+           [--server-groups=group_name (,group_name)* | --all-server-groups]
+           [--headers={operation_header (;operation_header)*}]
+
+DESCRIPTION
+
+  Deploys the application designated by the file_path or enables an already
+  existing but disabled in the repository deployment designated by the name
+  . . .
+----
++
+. `ls` command list the contents of a node path including node types and attributes. Giving this command on the root node shows the following output:
++
+[source]
+----
+[standalone@localhost:9990 /] ls
+core-service                          management-minor-version=0            
+deployment                            name=aruns-macbook-pro                
+deployment-overlay                    namespaces=[]                         
+extension                             process-type=Server                   
+interface                             product-name=undefined                
+path                                  product-version=undefined             
+socket-binding-group                  profile-name=undefined                
+subsystem                             release-codename=WildFly              
+system-property                       release-version=8.0.0.Final-SNAPSHOT  
+launch-type=STANDALONE                running-mode=NORMAL                   
+management-major-version=2            schema-locations=[]                   
+management-micro-version=0            server-state=running
+----
++
+All entries with name/value pairs are attributes and every thing else is a node.
++
+. `cd` command changes the current node path to the specified argument.
++
+Change the path to `management' node by typing the command:
++
+[source]
+----
+[standalone@localhost:9990 /] cd core-service=management
+[standalone@localhost:9990 core-service=management]
+----
++
+The command line prompt in the first line shows that the command was issued from the root node. The prompt in the second line shows the updated node name.
++
+. Deploy an application and check its status by typing the following commands:
++
+[source]
+----
+[standalone@localhost:9990 /] deploy ~/workspaces/wildfly-lab/samples/javaee7/target/javaee7-1.0-SNAPSHOT.war --force
+[standalone@localhost:9990 /] deployment-info 
+NAME                     RUNTIME-NAME             PERSISTENT ENABLED STATUS 
+javaee7-1.0-SNAPSHOT.war javaee7-1.0-SNAPSHOT.war true       true    OK
+----
++
+. Change the HTTP application port from a default value of 8080 to 8090 by giving the following command:
++
+[source]
+----
+[standalone@localhost:9990 /] /socket-binding-group=standard-sockets/socket-binding=http:write-attribute(name=port,value=8090)
+----
++
+and see the output as:
++
+[source]
+----
+{
+    "outcome" => "success",
+    "response-headers" => {
+        "operation-requires-reload" => true,
+        "process-state" => "reload-required"
+    }
+}
+----
++
+The command output indicates that the server should be reloaded. This can be achieved by typing `reload` command at the prompt.
+Now the application is accessible at http://8090/javaee7-1.0-SNAPSHOT/EmployeeList instead of the port 8080.
++
+Any change to the management model is persisted to the configuration file. Lets change the port back to 8080 by giving the following command:
++
+[source]
+----
+[standalone@localhost:9990 /] /socket-binding-group=standard-sockets/socket-binding=http:write-attribute(name=port,value=8080)
+----
+
+==== GUI
+
+CLI can be started with a GUI instead of a command line. It allows you to browse through different nodes and commands and operations supported on a node. Commands are automatically created and can be submitted to the server. Applications can be deployed and undeployed as well.
+
+. Type the following command to start CLI with GUI:
++
+[source]
+----
+standalone.sh --gui
+----
++
+The complete domain model is shown in a separate window.
+. Right-click on any node to see the list of supported operations. The command is dynamically created and populated in the `cmd>' text box.
+. This command can be submitted to the server by clicking on `Submit' button. Command output is shown.
+. Type `serv' in `Filter' box to search for any nodes and attributes that contains this phrase.
+
+
+=== Non-interactive mode
+
+. Deploy the application using the following command:
++
+[source]
+----
+jboss-cli.sh --connect --command="deploy target/javaee7-1.0-SNAPSHOT.war --force"
+----
++
+The directory name of the war file in the command may be different depending upon how `jboss-cli' was invoked. Verify the server log to ensure that the application was redeployed. Look for specific timestamp in the log entries.
+
+==== Batch
+
+The batch mode allows one to group commands and operations and execute them together as an atomic unit, i.e., if at least one of the commands or operations fails, all the other successfully executed commands and operations in the batch are rolled back.
+
 === Admin Console
+
+Shown during RBAC
 
 === File system-based
 
+Deploying archives such as war, ear, and rar files using file system is as simple as copying to `standalone/deployments` directory. The deployment can be configured for auto-deploy or manual mode.
+
+Any archive can be placed in `standalone/deployments` directory and is automatically deployed to the server. This is the default behavior.
+
+CAUTION: This deployment mode is only intended to be used during development phase. Managed domain mode is recommended if running production systems.
+
+. Clone the github repo by giving the following command:
++
+[source]
+----
+git clone https://github.com/arun-gupta/wildfly-lab.git
+----
++
+. Change directory to `samples/javaee7` and build the sample as:
++
+[source]
+----
+mvn install
+----
++
+. Copy the war file to `standalone/deployments` directory using the following command:
++
+[source]
+----
+cp target/javaee7-1.0-SNAPSHOT.war /Users/arungupta/workspaces/wildfly/build/target/wildfly-8.0.0.Final-SNAPSHOT/standalone/deployments
+----
++
+Make sure to change the directory name to match your filesystem.
++
+. Verify the deployed application by accessing the webpage http://localhost:8080/javaee7-1.0-SNAPSHOT/EmployeeList.
+
 === Maven plugin
+
+The wildfly-maven-plugin is used to deploy, redeploy, undeploy or run your application. You can also deploy or undeploy artifacts, such as JDBC drivers, and add or remove resources. There is also the ability to execute CLI commands.
+
+. Note that `samples/javaee7/pom.xml` contains the following fragment:
++
+[source, xml]
+----
+<plugin>
+    <groupId>org.wildfly.plugins</groupId>
+    <artifactId>wildfly-maven-plugin</artifactId>
+    <version>1.0.0.Beta1</version>
+    <executions>
+        <execution>
+            <phase>install</phase>
+            <goals>
+                <goal>deploy</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+----
++
+This specifies the `wildfly-maven-plugin' description to `pom.xml'. It also invokes the plugin `deploy' target during the standard maven `install' phase.
++
+. Start a WildFly instance as:
++
+[source]
+----
+standalone.sh
+----
++
+. Deploy the application by giving the command:
++
+[source]
+----
+mvn wildfly:deploy
+----
++
+or
++
+[source]
+----
+mvn install
+----
++
+. Access the web page at http://localhost:8080/javaee7/EmployeeList.
 
 === REST API
 
