@@ -18,11 +18,82 @@
 
 [[deployment]]
 == Deployment
-. jboss-cli
-. Admin Console
-. File system-based
-. Maven plugin
-. REST API
+=== jboss-cli
+
+WildFly comes with a Command Line Interface management tool for a standalone server or a managed domain. This script is in the `bin` directory of WildFly distrbution and can be invoked by calling `jboss-cli.sh` for Mac/Linux based systems or `jboss-cli.bat` for Windows. It allows a user to connect to a standalone server or domain controller and execute management operations available through the management model.
+
+. Start a WildFly standalone server, if not already running, using the following command:
++
+[source, text]
+----
+standalone.sh
+----
++
+. Use `jboss-cli' to connect with this instance by giving the following command:
++
+[source]
+----
+jboss-cli.sh -c
+----
++
+The `-c` switch connects using the default host (`localhost') and management port (`9990'). These values are specified in `bin/jboss-cli.xml' and can be updated.
++
+This opens up the `jboss-cli' interactive console and shows the following prompt:
++
+[source]
+----
+[standalone@localhost:9990 /]
+----
++
+The prompt indicates that `jboss-cli' is connected to a standalone instance's default management port.
++
+. If WildFly instance is running on a different host and/or port, then `--controller` switch can be used to specify that information.
++
+.. In another shell, start another WildFly instance on a different port using the following command:
++
+[source]
+----
+./bin/standalone.sh -Djboss.socket.binding.port-offset=10000
+----
++
+This will start another WildFly standalone instance on application port 18080 and management port 19090.
++
+.. Use `jboss-cli' to connect with this instance by giving the following command:
++
+[source]
+----
+jboss-cli.sh -c --controller=localhost:19990
+----
++
+This opens up the `jboss-cli' interactive console and shows the following prompt:
++
+[source]
+----
+[standalone@localhost:19990 /]
+----
++
+The prompt indicates that `jboss-cli' is connected to a standalone instance on port `19990'.
+
+WildFly internal management model consists of _management resources_ that that are added, removed, or modified by using _operations_ and _commands_. Operations are low level but a comprehensive way to manage the server. Commands are more user-friendly, although most of them still translate into operation requests and some of them even into a few composite operation requests.
+
+All resources are organized in a tree. The path to the node in the tree for a particular resource is its _address_ and is identified by `/`.
+
+Each resource expose information about their state as _attributes_.
+
+Each resource may support child resources.
+
+All resources expose metadata that describes their attributes, operations, and child types. This metadata can be queried by invoking one or more of the _global operations_ supported by the resource.
+
+Command and operation request history is enabled by default. While in the command line session, you can use the arrow keys to go back and forth in the history of commands and operations.
+
+=== Admin Console
+
+=== File system-based
+
+=== Maven plugin
+
+=== REST API
+
 include::jrebel.asciidoc[]
 
 [[testing]]
@@ -84,7 +155,9 @@ Show basic functionality using Admin Console from https://vimeo.com/78780176[Par
 . Access Admin Console at http://localhost:9090, show the error message.
 . Create user in management realm using add-user.sh, use ``admin'' as user and password.
 . Reload the Admin Console and show that login now works.
-. Click on Administration tab and explain Access Control Providers.
+. Click on `Administration' tab and explain Access Control Providers. WildFly 8 comes with two access control providers:
+.. `simple' provider, the default one, gives all privileges to any authenticated administrator. This provides compatibility with older releases.
+.. `rbac' provider allows you to setup configuration that will map users to different roles.
 . Change access control provider by giving the following command interactively on `jboss-cli`:
 +
 [source,text]
@@ -94,6 +167,16 @@ Show basic functionality using Admin Console from https://vimeo.com/78780176[Par
 ----
 +
 . Hmm, Admin Console is not accessible now. Restarting the server also did not help, debugging ...
+. What to show ?
+.. Show information about the logged in user on top-right.
+.. A user in `Super User' role can act to run in any role by clicking on `Run as'. Click on `Run as' and select drop-down list box to see the list of available roles.
+.. Select the ‘Monitor’ role and click on `Run As'.
+... The application has to be reloaded for changes to take effect. Click on `Confirm' to reload the application. After the reload, clicking on the user on top-right in admin console will display the selected role as `Run as Monitor'.
+... Click on `Manage Deployments' and check that `Add', ‘Remove’, and similar buttons are not present.
+... Click on `Profile', `Data Sources' and check that all data sources are visible but not editable. This is identified by the fact that `Add', `Remove', and `Disable' buttons are not available as shown.
+... Click on `Administration' tab and make sure the user does not have access to it.
+.. Feel free to select other roles and observe how different options are enabled/disabled.
+.. Talk about how roles can be assigned to users and groups.
 
 == Clustering + Session failover
 
