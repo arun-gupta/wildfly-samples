@@ -35,17 +35,30 @@ Three guiding principles:
 . Tests should be executable from both the IDE and the build tool
 . The platform should extend or integrate existing test frameworks
 
+Generate a simple Java EE 7 sample with pre-defined Arquillian dependencies:
+
+[source,text]
+----
+ mvn --batch-mode archetype:generate \\
+     -DarchetypeGroupId=org.javaee-samples \\
+     -DarchetypeArtifactId=javaee7-arquillian-archetype \\
+     -DarchetypeVersion=1.0.0 \\
+     -DarchetypeRepository=http://dl.bintray.com/javaee-samples/JavaEE-Samples \\
+     -DgroupId=org.wildfly.samples.javaee7.arquillian \\
+     -DartifactId=arquillian
+----
+
 === Remote container
 
 === Managed container
-Managed Container is simpley a remote container that also includes lifecycle management (start and stop). Container process is started in a different JVM. Once the container is up and running, it just behaves like a remote container.
-... JUnit and TestNG
+Managed Container is simply a remote container that also includes lifecycle management (start and stop). Container process is started in a different JVM. Once the container is up and running, it just behaves like a remote container.
+
 
 == RBAC
 
 Role Based Access Control (RBAC) is the ability to restrict access to system or certain portions of it to authorized users. For JBoss AS 7.x or JBoss EAP 6.0 and 6.1, the web-based administrative console had an all-or-nothing approach. So if a user can authenticate with management security realm, then he'll have all the privileges. This might be OK for smaller deployments but the roles are typically divided for mission critical deployments and a finer-grained control is required.
 
-JBoss EAP 6.2 and WildFly 8 introduces RBAC using different roles. There are essential 7 different roles in 2 different categories – administrative and privileged:
+WildFly 8 introduces RBAC using different roles. There are essential 7 different roles in 2 different categories – administrative and privileged:
 
 . Monitor
 . Operator
@@ -57,7 +70,20 @@ JBoss EAP 6.2 and WildFly 8 introduces RBAC using different roles. There are ess
 
 Each Role is defined as a set of Permissions and Permissions specify what Actions are permitted by the logged in user, which is basically lookup, write, or delete.
 
-Show basic functionality using Admin Console from https://vimeo.com/78780176[Part 1], https://vimeo.com/78785944[Part 2], https://vimeo.com/78786992[Part 3].
+Show basic functionality using Admin Console from https://vimeo.com/78780176[Part 1], https://vimeo.com/78785944[Part 2], https://vimeo.com/78786992[Part 3]. Here are the features that need to be highlighted:
+
+. Start using `.bin/domain.sh`
+. Access Admin Console at http://localhost:9090, show the error message.
+. Create user in management realm using add-user.sh, use ``admin'' as user and password.
+. Reload the Admin Console and show that login now works.
+. Click on Administration tab and explain Access Control Providers.
+. Change access control provider by giving the following command interactively on `jboss-cli`:
+[source,text]
+----
+[domain@localhost:9990 /] /core-service=management/access=authorization:write-attribute(name=provider,value=rbac)
+[domain@localhost:9990 /] reload --host=master
+----
+. Hmm, Admin Console is not accessible now. Restarting the server also did not help, debugging ...
 
 == Clustering + Session failover
 
