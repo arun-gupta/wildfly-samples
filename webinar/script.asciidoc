@@ -13,11 +13,42 @@
 
 [[development]]
 == Development
-=== IDE: IntelliJ, JBoss Developer Studio/Eclipse, NetBeans
+
+=== IntelliJ
+
+. Start IntelliJ
+. Select Java EE 7 Samples project. Talk about how IntelliJ provides extensive support around Java EE 7.
+. Click on `Edit Configurations' on top-right to create a new configuration. 
+.. Click on `+' to create a new `JBoss Server' configuration. Select `JBoss', `Local'.
+.. Click on `Configure...'' to configure WildFly application server. Specify the location of installation
+.. Change the name to `WildFly 8.1 CR2'.
+.. Click on `OK' to take all other defaults
+. Expand `jaxrs', select `jaxrs-client'. This will start WildFly, and show localhost:8080 in the browser.
+. Expand through `src/main/test` and show `MyResourceTest`.
+.. Right-click on the project and select `Run All Tests'.
+. Place your cursor in `test1PostAndGet()' method, right-click and select `Run test1PostAndGet()'. This shows a single test can be easily run.
+
+Java EE 7 development using IntelliJ webinar at https://www.youtube.com/watch?v=3BHWpCWzjac provide more details.
+
+=== NetBeans
+
+. Show how WildFly plugin can be installed
+. Open javaee7-samples project and walk through it
+
+=== JBoss Developer Studio/Eclipse
+
+https://www.jboss.org/products/devstudio.html[JBoss Developer Studio] provide comprehensive tooling around Java EE, HTML5, Mobile, and many other technologies needed for modern web application development. The latest 7.1.1 release provide support for Eclipse Kepler SR2, the latest Eclipse release.
+
+. Bring up JBDS
+. Click on `Servers' tab, add a new WildFly instance
+. Open `javaee7-samples/jaxrs/jaxrs-client' project.
+. Right-click, Run As, Maven test
 
 === Forge
 
-This section of the script creates a new Java EE app from scratch using Forge, adds the key Java EE 6 technologies. It adds some pre-canned entities, and scaffolds JAX-RS endpoints.
+JBoss Forge is the fastest way to build your Java EE applications, and not even tied to a particular IDE or an Application Server.
+
+This section of the script creates a new Java EE app from scratch using Forge, adds the key Java EE technologies. It adds some pre-canned entities, and scaffolds JAX-RS endpoints.
 
 1. In the Forge console, create a new project
 
@@ -488,8 +519,6 @@ mvn install
 . Access the web page at http://localhost:8080/javaee7/EmployeeList.
 
 === REST API
-
-include::jrebel.asciidoc[]
 
 [[testing]]
 == Testing
