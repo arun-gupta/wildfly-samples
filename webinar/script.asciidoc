@@ -30,12 +30,12 @@
 
 Java EE 7 development using IntelliJ webinar at https://www.youtube.com/watch?v=3BHWpCWzjac provide more details.
 
-=== NetBeans
+=== (NOT COVERING) NetBeans
 
 . Show how WildFly plugin can be installed
 . Open javaee7-samples project and walk through it
 
-=== JBoss Developer Studio/Eclipse
+=== (NOT COVERING) JBoss Developer Studio/Eclipse
 
 https://www.jboss.org/products/devstudio.html[JBoss Developer Studio] provide comprehensive tooling around Java EE, HTML5, Mobile, and many other technologies needed for modern web application development. The latest 7.1.1 release provide support for Eclipse Kepler SR2, the latest Eclipse release.
 
@@ -52,42 +52,43 @@ This section of the script creates a new Java EE app from scratch using Forge, a
 
 1. In the Forge console, create a new project
 
-    project-new --named basic-javaee-forge --topLevelPackage org.forge.samples.javaee
+    project-new --named simple-javaee --topLevelPackage org.forge.samples.javaee
 
 2. Add some Java EE capabilities:
 
-    servlet-setup; cdi-setup; jpa-setup --container JBOSS_EAP6; rest-setup; constraint-setup; faces-setup; ejb-setup; scaffold-setup
+    servlet-setup; cdi-setup; jpa-setup; rest-setup; constraint-setup; faces-setup; ejb-setup; scaffold-setup
     ***SUCCESS*** Servlet API has been installed.
-    [basic-javaee-forge]$ ***SUCCESS*** CDI has been installed.
-    [basic-javaee-forge]$ ***SUCCESS*** Persistence (JPA) is installed.
-    [basic-javaee-forge]$ ***SUCCESS*** JAX-RS has been installed.
-    [basic-javaee-forge]$ ***SUCCESS*** JavaServer Faces has been installed.
-    [basic-javaee-forge]$ ***SUCCESS*** Bean Validation is installed.
-    [basic-javaee-forge]$ ***SUCCESS*** JavaServer Faces has been installed.
-    [basic-javaee-forge]$ ***SUCCESS*** EJB has been installed.
-    [basic-javaee-forge]$ ***SUCCESS*** Scaffold was setup successfully.
+    [simple-javaee]$ ***SUCCESS*** CDI has been installed.
+    [simple-javaee]$ ***SUCCESS*** Persistence (JPA) is installed.
+    [simple-javaee]$ ***SUCCESS*** JAX-RS has been installed.
+    [simple-javaee]$ ***SUCCESS*** JavaServer Faces has been installed.
+    [simple-javaee]$ ***SUCCESS*** Bean Validation is installed.
+    [simple-javaee]$ ***SUCCESS*** JavaServer Faces has been installed.
+    [simple-javaee]$ ***SUCCESS*** EJB has been installed.
+    [simple-javaee]$ ***SUCCESS*** Scaffold was setup successfully.
 
 3. Add some entities:
 
-    [basic-javaee-forge]$ jpa-new-entity --named Author --targetPackage org.forge.samples.javaee.entities
+    [simple-javaee]$ jpa-new-entity --named Author --targetPackage org.forge.samples.javaee.entities
     ***SUCCESS*** Entity org.forge.samples.javaee.entities.Author created
     [Author.java]$ jpa-new-entity --named Book --targetPackage org.forge.samples.javaee.entities
     ***SUCCESS*** Entity org.forge.samples.javaee.entities.Book created
++
+TIP: Use arrow keys to edit the previous command.    
++
+4. Show the entity:
++
+[source,text]
+----
+[Book.java]$ cat .
+package org.forge.samples.javaee.entities;
 
-4. Each entity is generated with the following fields:
-+
-[source,java]
+import javax.persistence.Entity;
+import java.io.Serializable;
+import javax.persistence.Id; 
 ----
-@Id
-@GeneratedValue(strategy = GenerationType.AUTO)
-@Column(name = "id", updatable = false, nullable = false)
-private Long id;
-@Version
-@Column(name = "version")
-private int version;
-----
-+
-Add some fields to these entities:
+
+5. Add some fields to these entities:
 
     [Book.java]$ jpa-new-field --named title --type String --length 100
     ***SUCCESS*** Field title created
@@ -108,10 +109,6 @@ Add some fields to these entities:
     ***SUCCESS*** Constraint Size successfully configured
     [Book.java]$ constraint-add --onProperty isbn --constraint Size --max 30
     ***SUCCESS*** Constraint Size successfully configured
-    [Book.java]$ constraint-add --onProperty isbn --constraint Pattern --regexp ^\d{9}[\d|X]$
-    ***ERROR*** org.eclipse.jdt.core.dom.MarkerAnnotation cannot be cast to org.eclipse.jdt.core.dom.NormalAnnotation
-+
-This is filed as https://issues.jboss.org/browse/FORGE-1706.
 
 ==== JSF Scaffold
 
@@ -125,11 +122,11 @@ This is filed as https://issues.jboss.org/browse/FORGE-1706.
 5. Package and deploy the application as:
 
     mvn clean package
-    jboss-cli.sh -c --command="deploy /Users/arungupta/workspaces/forge-samples/basic_javaee/basic-javaee-forge/target/basic-javaee-forge-1.0.0-SNAPSHOT.war --force"
+    jboss-cli.sh -c --command="deploy /Users/arungupta/workspaces/forge-samples/basic_javaee/simple-javaee/target/simple-javaee-1.0.0-SNAPSHOT.war --force"
 
-5. Access the application at http://localhost:8080/basic-javaee-forge-1.0.0-SNAPSHOT/faces/index.xhtml.
+5. Access the application at http://localhost:8080/simple-javaee-1.0.0-SNAPSHOT/faces/index.xhtml.
 
-==== REST Scaffold
+==== (NOT COVERING) REST Scaffold
 
 6. Generate REST scaffold endpoints for the entity.
 
@@ -141,15 +138,15 @@ This is filed as https://issues.jboss.org/browse/FORGE-1706.
 6. Package and deploy the application as:
 
     mvn clean package
-    jboss-cli.sh -c --command="deploy /Users/arungupta/workspaces/forge-samples/basic_javaee/basic-javaee-forge/target/basic-javaee-forge-1.0.0-SNAPSHOT.war --force"
+    jboss-cli.sh -c --command="deploy /Users/arungupta/workspaces/forge-samples/basic_javaee/simple-javaee/target/simple-javaee-1.0.0-SNAPSHOT.war --force"
 
-6. Access the endpoints at http://localhost:8080/basic-javaee-forge-1.0.0-SNAPSHOT/rest/authors and http://localhost:8080/basic-javaee-forge-1.0.0-SNAPSHOT/rest/books.
+6. Access the endpoints at http://localhost:8080/simple-javaee-1.0.0-SNAPSHOT/rest/authors and http://localhost:8080/simple-javaee-1.0.0-SNAPSHOT/rest/books.
 
-==== Complete Script
+==== (NOT COVERING) Complete Script
 
 [source,text]
 ----
-project-new --named basic-javaee-forge --topLevelPackage org.forge.samples.javaee
+project-new --named simple-javaee --topLevelPackage org.forge.samples.javaee
 servlet-setup; cdi-setup; jpa-setup --container JBOSS_EAP6; rest-setup; constraint-setup; faces-setup; ejb-setup; scaffold-setup
 jpa-new-entity --named Author --targetPackage org.forge.samples.javaee.entities
 jpa-new-entity --named Book --targetPackage org.forge.samples.javaee.entities
@@ -225,7 +222,7 @@ This opens up the `jboss-cli' interactive console and shows the following prompt
 +
 The prompt indicates that `jboss-cli' is connected to a standalone instance on port `19990'.
 
-WildFly internal management model consists of _management resources_ that that are added, removed, or modified by using _operations_ and _commands_. Operations are low level but a comprehensive way to manage the server. Commands are more user-friendly, although most of them still translate into operation requests and some of them even into a few composite operation requests.
+WildFly internal management model consists of _management resources_ that are added, removed, or modified by using _operations_ and _commands_. Operations are low level but a comprehensive way to manage the server. Commands are more user-friendly, although most of them still translate into operation requests and some of them even into a few composite operation requests.
 
 All resources are organized in a tree. The path to the node in the tree for a particular resource is its _address_ and is identified by `/`.
 
@@ -401,7 +398,7 @@ Any change to the management model is persisted to the configuration file. Lets 
 [standalone@localhost:9990 /] /socket-binding-group=standard-sockets/socket-binding=http:write-attribute(name=port,value=8080)
 ----
 
-==== GUI
+==== (NOT COVERING) GUI
 
 CLI can be started with a GUI instead of a command line. It allows you to browse through different nodes and commands and operations supported on a node. Commands are automatically created and can be submitted to the server. Applications can be deployed and undeployed as well.
 
@@ -418,7 +415,7 @@ The complete domain model is shown in a separate window.
 . Type `serv' in `Filter' box to search for any nodes and attributes that contains this phrase.
 
 
-=== Non-interactive mode
+=== (NOT COVERING) Non-interactive mode
 
 . Deploy the application using the following command:
 +
@@ -429,15 +426,15 @@ jboss-cli.sh --connect --command="deploy target/javaee7-1.0-SNAPSHOT.war --force
 +
 The directory name of the war file in the command may be different depending upon how `jboss-cli' was invoked. Verify the server log to ensure that the application was redeployed. Look for specific timestamp in the log entries.
 
-==== Batch
+==== (NOT COVERING) Batch
 
 The batch mode allows one to group commands and operations and execute them together as an atomic unit, i.e., if at least one of the commands or operations fails, all the other successfully executed commands and operations in the batch are rolled back.
 
-=== Admin Console
+=== (NOT COVERING) Admin Console
 
 Shown during RBAC
 
-=== File system-based
+=== (NOT COVERING) File system-based
 
 Deploying archives such as war, ear, and rar files using file system is as simple as copying to `standalone/deployments` directory. The deployment can be configured for auto-deploy or manual mode.
 
@@ -518,7 +515,7 @@ mvn install
 +
 . Access the web page at http://localhost:8080/javaee7/EmployeeList.
 
-=== REST API
+=== (NOT COVERING) REST API
 
 [[testing]]
 == Testing
@@ -552,6 +549,7 @@ Generate a simple Java EE 7 sample with pre-defined Arquillian dependencies:
 ----
 
 === Remote container
+Remote Container resides in a separate JVM from the test runner. Its lifecycle may be managed by Arquillian, or Arquillian may bind to a container that is already started.
 
 === Managed container
 Managed Container is simply a remote container that also includes lifecycle management (start and stop). Container process is started in a different JVM. Once the container is up and running, it just behaves like a remote container.
@@ -617,10 +615,22 @@ Run the video from https://vimeo.com/89157225[]. It shows:
 
 === OpenShift
 
+==== IntelliJ
+
+. Create an OpenShift application using WildFly cartridge
+. IntelliJ, Preferences, search on "Cloud", setup OpenShift credentials
+.. Click on Test Connection to test the connection
+.. Talk about uploading public SSH key (only visible if the keys are not previously uploaded)
+. Check out application from git and show how it can be directly deployed from IntelliJ
+
+Complete video at: https://www.youtube.com/watch?v=H1pinrncv2A
+
+==== (NOT COVERING) JBDS
+
 . Create an OpenShift application using WildFly cartridge
 . Access the WildFly administration console using port forwarding
 . Import the created application in JBoss Developer Studio/IntelliJ
 . Make changes to the application and view them in the deployed application
 . Add a simple Java EE 7 component to the application
 
-=== Cloudbees
+=== (NOT COVERING) Cloudbees
