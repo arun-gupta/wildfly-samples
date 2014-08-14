@@ -1,4 +1,4 @@
-package org.javaee7.websocket.chat;
+package org.jbosseap63.websocket.chat;
 
 import java.io.IOException;
 import javax.websocket.EncodeException;
