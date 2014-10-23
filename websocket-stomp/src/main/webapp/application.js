@@ -1,11 +1,13 @@
-var url = "ws://localhost:61614";
+var server = document.getElementById("server");
+var output = document.getElementById("output");
+var queue = document.getElementById("queue");
+var payload = document.getElementById("payload");
+
+var url = server.value;
 var client;
 
 var subscription;
 
-var output = document.getElementById("output");
-var queue = document.getElementById("queue");
-var payload = document.getElementById("payload");
 
 function send_message() {
     writeToScreen("Payload: " + payload.value + ", Queue: " + queue.value);
