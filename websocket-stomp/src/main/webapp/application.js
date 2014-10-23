@@ -4,13 +4,16 @@ var client;
 var subscription;
 
 var output = document.getElementById("output");
+var queue = document.getElementById("queue");
+var payload = document.getElementById("payload");
 
 function send_message() {
-    client.send(document.getElementById("queue").value, {}, document.getElementById("payload").value);
+    writeToScreen("Payload: " + payload.value + ", Queue: " + queue.value);
+    client.send(queue.value, {}, payload.value);
 }
 
 function subscribe() {
-    subscription = client.subscribe(document.getElementById("queue").value, function (message) {
+    subscription = client.subscribe(queue.value, function (message) {
         // called when the client receives a STOMP message from the server
         if (message.body) {
             writeToScreen("got message with body " + message.body)
@@ -29,7 +32,7 @@ function connect() {
 
     client.connect("admin", "admin",
             function () {
-                // called back after the client is connected and authenticated to the STOMP server
+                writeToScreen("WebSocket connected");
             },
             function (error) {
                 // display the error's message header:
