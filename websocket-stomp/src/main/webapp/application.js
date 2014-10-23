@@ -1,16 +1,16 @@
-var url = "ws://localhost:61613/stomp";
-var client = Stomp.client(url);
+var url = "ws://localhost:61614";
+var client;
 
 var subscription;
 
 var output = document.getElementById("output");
 
 function send_message() {
-    client.send(document.getElementById("queue"), {}, document.getElementById("payload"));
+    client.send(document.getElementById("queue").value, {}, document.getElementById("payload").value);
 }
 
 function subscribe() {
-    subscription = client.subscribe(document.getElementById("queue"), function (message) {
+    subscription = client.subscribe(document.getElementById("queue").value, function (message) {
         // called when the client receives a STOMP message from the server
         if (message.body) {
             writeToScreen("got message with body " + message.body)
@@ -25,6 +25,8 @@ function unsubscribe() {
 }
 
 function connect() {
+    client = Stomp.client(url);
+
     client.connect("admin", "admin",
             function () {
                 // called back after the client is connected and authenticated to the STOMP server
