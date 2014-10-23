@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>STOMP over WebSocket</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>STOMP over WebSocket</h1>
+        <form action=""> 
+
+            Payload: <input id="payload" name="payload" type="text"><br>
+            Queue: <input id="queue" name="queue" type="text"><br>
+            <input onclick="connect();" value="Connect" type="button"> 
+            <input onclick="send_message();" value="Send Message" type="button"> 
+            <input onclick="get_messages();" value="Get Message" type="button"> 
+            <input onclick="disconnect();" value="Disconnect" type="button"> 
+
+        </form>
+        
+        <div id="output"></div>
+        
+        <script src="stomp.js"></script>
+        <script src="application.js"></script>
+    </body>
+</html>
