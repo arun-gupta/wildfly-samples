@@ -35,8 +35,7 @@ function connect() {
                 writeToScreen("WebSocket connected");
             },
             function (error) {
-                // display the error's message header:
-                writeToScreen("ERROR: " + error.headers.message);
+                writeToScreen("ERROR: " + error);
             });
 }
 
