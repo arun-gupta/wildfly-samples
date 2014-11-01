@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <title>MQTT over websockets</title>
+        <style type="text/css">
+            #status {
+                padding: 5px;
+                display: inline-block;
+            }
+            label, .label {
+                display: inline-block;
+                width: 100px;
+            }
+            li {
+                list-style: none;
+
+                background: #fff;
+                margin: 2px;
+            }
+            ul {
+                background: #eef;
+            }
+            .disconnected {
+                background-color: #f88;
+            }
+            input {
+                width: 400px;
+            }
+            .connected {
+                background-color: #8f8;
+            }
+
+            #messagelist {
+                width: 600px;
+                height: 200px;
+                overflow-y: scroll;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Super simple chat</h1>
+        <span class='label'>Status</span> <div id="status" class="disconnected">Pending</div>
+        <form id='mainform' action="#">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" width="40" value="anonymous"/> 
+
+            <label for="message">Message</label>
+            <input id="message" name="message" type="text" width="200"/>
+            <input id="submit" type="submit" value="go"/>
+        </form>
+
+        <div id="messages"><ul id="messagelist">
+
+        </ul></div>
+
+    <script src="mqttws31.js"></script>
+    <script src="jquery-1.11.1.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        function doSubscribe() {
+
+        }
+
+        $('#mainform').submit(function(){
+            var messageinput = $('#message');
+            message = new Messaging.Message(messageinput.val());
+            message.destinationName = "/can/"+$('#name').val();
+            messageinput.val('');
+            messageinput.focus();
+            client.send(message);
+            return false;
+        });
+
+
+        function doDisconnect() {
+            client.disconnect();
+        }
+
+        // Web Messaging API callbacks
+        var onSuccess = function(value) {
+            $('#status').toggleClass('connected',true);
+            $('#status').text('Success');
+        }
+
+        var onConnect = function(frame) {
+            $('#status').toggleClass('connected',true);
+            $('#status').text('Connected');
+            client.subscribe("/can/#");
+            //var form = document.getElementById("example");
+            //form.connected.checked= true;
+        }
+        var onFailure = function(error) {
+            $('#status').toggleClass('connected',false);
+            $('#status').text("Failure");
+        }
+
+        function onConnectionLost(responseObject) {
+            //var form = document.getElementById("example");
+            //form.connected.checked= false;
+            //if (responseObject.errorCode !== 0)
+            alert(client.clientId+"\n"+responseObject.errorCode);
+        }
+
+        function onMessageArrived(message) {
+            $('#messagelist').prepend('<li>'+message.destinationName+ '->' +message.payloadString+'</li>');
+            //var form = document.getElementById("example");
+            //form.receiveMsg.value = message.payloadString;
+        }
+
+        var client;
+        var r = Math.round(Math.random()*Math.pow(10,5));
+        var d = new Date().getTime();
+        var cid = r.toString() + "-" + d.toString()
+
+        client = new Messaging.Client("localhost", 1883, cid );
+        client.onConnect = onConnect;
+        client.onMessageArrived = onMessageArrived;
+        client.onConnectionLost = onConnectionLost;
+        client.connect({onSuccess: onConnect, onFailure: onFailure});
+
+    });
+
+    </script>
+    </body>
+</html>
+
