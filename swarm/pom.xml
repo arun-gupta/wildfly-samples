@@ -5,12 +5,22 @@
     <artifactId>swarm</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+    
+    <properties>
+        <version.wildfly-swarm>1.0.0.Alpha1</version.wildfly-swarm>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>wildfly-swarm-jaxrs</artifactId>
+            <version>${version.wildfly-swarm}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -43,6 +53,19 @@
                         <phase>install</phase>
                         <goals>
                             <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>wildfly-swarm-plugin</artifactId>
+                <version>${version.wildfly-swarm}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>create</goal>
                         </goals>
                     </execution>
                 </executions>
