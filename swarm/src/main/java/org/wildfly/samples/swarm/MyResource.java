@@ -1,5 +1,8 @@
 package org.wildfly.samples.swarm;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 
@@ -8,8 +11,16 @@ import javax.ws.rs.Path;
  */
 @Path("/resource")
 public class MyResource {
-    @GET
+    
+    @PersistenceContext
+    EntityManager em;
+    
     public String get() {
         return "hello swarm!";
+    }
+    
+    @GET
+    public List<Person> getAll() {
+        return em.createNamedQuery("Person.findAll", Person.class).getResultList();
     }
 }
