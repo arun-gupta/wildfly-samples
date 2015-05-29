@@ -30,7 +30,10 @@ public class Main {
         container.deploy(dsDeployment);
 
         WarDeployment deployment = new DefaultWarDeployment(container);
-        deployment.getArchive().addPackage(Main.class.getPackage());
+        deployment.getArchive().addClass(Employee.class);
+        deployment.getArchive().addClass(MyApplication.class);
+        deployment.getArchive().addClass(MyResource.class);
+//        deployment.getArchive().addPackage(Main.class.getPackage());
 //        deployment.getArchive()
 //                .addAsResource("META-INF/persistence.xml")
 //                .addAsResource("META-INF/load.sql");
