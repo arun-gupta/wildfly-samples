@@ -4,7 +4,7 @@
     <groupId>org.wildfly.samples.swarm</groupId>
     <artifactId>swarm</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     
     <properties>
         <version.wildfly-swarm>1.0.0.Alpha2-SNAPSHOT</version.wildfly-swarm>
@@ -69,11 +69,21 @@
                 <groupId>org.wildfly.swarm</groupId>
                 <artifactId>wildfly-swarm-plugin</artifactId>
                 <version>${version.wildfly-swarm}</version>
-                <executions>
+                <!--                <executions>
                     <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>-->
+                <configuration>
+                    <mainClass>org.wildfly.samples.swarm.Main</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
                         </goals>
                     </execution>
                 </executions>
