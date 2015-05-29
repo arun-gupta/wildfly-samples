@@ -20,7 +20,7 @@ public class MyResource {
     }
     
     @GET
-    public List<Person> getAll() {
-        return em.createNamedQuery("Person.findAll", Person.class).getResultList();
+    public List<Employee> getAll() {
+        return em.createNamedQuery("Employee.findAll", Employee.class).getResultList();
     }
 }

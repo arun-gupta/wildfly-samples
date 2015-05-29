@@ -14,11 +14,11 @@ import javax.persistence.Table;
  * @author arungupta
  */
 @Entity
-@Table(name = "PERSON")
+@Table
 @NamedQueries({
-    @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p")
+    @NamedQuery(name = "Employee.findAll", query = "SELECT e FROM Employee e")
 })
-public class Person implements Serializable {
+public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,10 +27,10 @@ public class Person implements Serializable {
     @Column(length = 40)
     private String name;
 
-    public Person() {
+    public Employee() {
     }
 
-    public Person(String name) {
+    public Employee(String name) {
         this.name = name;
     }
 
