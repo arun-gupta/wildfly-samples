@@ -31,5 +31,6 @@
     
     <modules>
         <module>undertow</module>
+        <module>jberet</module>
     </modules>
 </project>
